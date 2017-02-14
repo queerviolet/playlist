@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      html, body {
+        width: 100%; height: 100%; margin: 0; padding: 0;
+        background: black url('grace-hopper-fullstack-hiring-day-clean.webp');
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+      }
+
+      video { display: none; }
+
+      video.current.started, video.current.ended {
+        display: block;
+        position: fixed;
+        top: 0; left: 0; bottom: 0; right: 0;
+        width: 100%; height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <video src="1609/pgb-vsu.mp4" data-volume=1></video>
+    <video src="1609/GH - Pioneers of Mars.mp4"></video>
+    <video src="1609/GH - paraGraphic.mp4"></video>
+    <video src="1609/GH - The Agency.mp4" data-volume=1></video>
+    <video src="1609/88-Keys.mp4"></video>
+    <video src="1609/FS-Loop.mp4"></video>
+    <video src="1609/FS-Agamari.mp4"></video>
+    <video src="1609/FS - Steps.mp4"></video>
+    <video src="1609/FS - Archiver.mp4"></video>
+    <video src="1609/FS-LunarAdventure.mp4"></video>    
+    <video src="1609/FS - Cheddar.mp4"></video>
+    <video src="1609/FS-ParkHere.mp4"></video>    
+    
+    <script>
+      'use strict';      
+      const playlist = {
+        get items() { return Array.from(document.querySelectorAll('audio,video')) },
+
+        get nowPlaying() {
+          return document.querySelector('audio.current,video.current')
+        }
+      }
+      window.playlist = playlist
+      
+      const didEnd = evt => {
+        evt.target.classList.remove('started')
+        evt.target.classList.add('ended')          
+      }
+
+      const didBegin = evt => {
+        evt.target.classList.remove('ended')
+        evt.target.classList.add('started')          
+      }
+
+      playlist.items.forEach(item => {
+        item.addEventListener('ended', didEnd)
+        item.addEventListener('playing', didBegin)
+        item.volume = ('volume' in item.dataset ? +item.dataset.volume : 0)        
+      })
+
+      function next(play=false) {
+        const items = playlist.items                
+        const current = playlist.nowPlaying
+        if (!current) {
+          items[0].play()
+          items[0].classList.add('current')
+          return
+        }
+        stopItem(current)
+        current.classList.remove('current')
+        current.classList.remove('ended')        
+        const idx = items.indexOf(current)
+        if (idx < items.length - 1) {
+          const next = items[idx + 1]
+          next.classList.add('current')
+          if (play) playItem(next)
+        }
+      }
+
+      function prev(play=false) {
+        const current = playlist.nowPlaying
+        const items = playlist.items                
+        if (!current) {
+          items[0].play()
+          items[0].classList.add('current')
+          return
+        }
+        stopItem(current)
+        current.classList.remove('current')
+        const idx = items.indexOf(current)
+        if (idx > 0) {
+          const prev = items[idx - 1]
+          prev.classList.add('current')
+          if (play) playItem(prev)
+        }
+      }
+
+      function playItem(item) {
+        playlist.items.forEach(item => item.pause && item.pause())
+        if (item.play) item.play()
+        item.classList.add('started')
+      }
+
+      function stopItem(item) {
+        playlist.items.forEach(item => item.pause && item.pause())        
+        if (item.pause) item.pause()
+        item.classList.remove('started')
+      }
+
+      function togglePlaying() {
+        const nowPlaying = playlist.nowPlaying
+        if (nowPlaying) {
+          if (nowPlaying.classList.contains('ended')) return next(false)
+          nowPlaying.paused ? playItem(nowPlaying) : nowPlaying.pause()
+        } else {
+          playlist.items[0].classList.add('current')
+          playItem(playlist.items[0])
+        }
+      }
+
+      function pause() {
+        playlist.nowPlaying.pause()
+      }
+
+      function seek(delta=-5) {
+        const nowPlaying = playlist.nowPlaying
+        if (!nowPlaying) return
+        const to = nowPlaying.currentTime + delta
+        const newTime = Math.min(Math.max(to, 0), nowPlaying.duration)
+        nowPlaying.currentTime = newTime
+      }        
+
+      window.addEventListener('keydown', evt => {
+        switch (evt.code) {
+        case 'Space':
+          togglePlaying()
+          break
+
+        case 'Escape': // esc
+          pause()
+          break
+
+        case 'ArrowRight':
+          if (evt.altKey)
+            next()
+          else if (evt.ctrlKey && evt.metaKey)
+            seek(5)
+          break
+
+        case 'ArrowLeft':
+          if (evt.altKey)
+            prev()
+          else if (evt.ctrlKey && evt.metaKey)
+            seek(-5)
+          break
+        }
+      })
+    </script>
+  </body>
+</html> 
