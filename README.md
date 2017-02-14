@@ -17,13 +17,13 @@ Etc.
 
 # Keyboard shortcuts
 
-**Space:** Play / Pause
-**⌥ right:** Next video
-**⌥ left:** Previous video
-**⌥ right:** Next video
-**⌥ left:** Previous video
-**^⌘ left:** Seek back 15 seconds
-**^⌘ right:** Seek forward 15 seconds
+  * **Space:** Play / Pause
+  * **⌥ right:** Next video
+  * **⌥ left:** Previous video
+  * **⌥ right:** Next video
+  * **⌥ left:** Previous video
+  * **^⌘ left:** Seek back 15 seconds
+  * **^⌘ right:** Seek forward 15 seconds
 
 # How to use this
 
