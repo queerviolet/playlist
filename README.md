@@ -31,7 +31,7 @@ First, clone this repo.
 
 You'll see that `index.html` has a bunch of `<video>` tags:
 
-html```
+```
     <video src="1609/pgb-vsu.mp4" data-volume=1></video>
     <video src="1609/GH - Pioneers of Mars.mp4"></video>
     <video src="1609/GH - paraGraphic.mp4"></video>
