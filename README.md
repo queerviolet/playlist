@@ -18,6 +18,7 @@ Etc.
 # Keyboard shortcuts
 
   * **Space:** Play / Pause
+  * **Esc:** Pause
   * **⌥ right:** Next video
   * **⌥ left:** Previous video
   * **⌥ right:** Next video
